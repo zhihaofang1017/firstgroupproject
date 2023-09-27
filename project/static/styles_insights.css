@@ -1,0 +1,25 @@
+#piechart_yearly {
+	width: 800px;
+	height: 500px;
+	margin-top: -200px;
+	margin-right: -150px;
+	float: right;
+}
+
+#piechart_weekly {
+	width: 800px;
+	height: 500px;
+	margin-top: -180px;
+	margin-left: -70px;
+	float: left;
+}
+
+.sometextright {
+	margin-top: -200px;
+}
+
+.recentexpense {
+	margin-top: -13px;
+}
+
+

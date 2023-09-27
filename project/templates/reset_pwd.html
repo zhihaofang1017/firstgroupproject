@@ -1,0 +1,78 @@
+<!-- Extends the base html file that has all the repeated things that all files need -->
+{% extends 'base.html' %}
+
+<!-- Inserts header elements unique to this file into base template so can still use-->
+{% block head %}
+    <!--  Importing CSS style sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_login.css') }}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <title>Reset</title>
+{% endblock %}
+
+
+{% block body %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class=flashes>
+        {% for category, message in messages %}
+        <div class="alert alert-{{category}} alert-dismissible fade show justify-content-center text-center" role="alert">
+            <strong>Message</strong> {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+<h4 style="background-color:#f1f1f1; text-align: center !important; padding: 5px;" class="float-centre">
+    Reset Password</h4>
+
+{% if not isSendMail %}
+    <div class="wrapper fadeInDown" style="margin-top: -50px;">
+        <div id="formContent">
+
+            <form method='POST' action="/reset_password">
+                <input type="text" class="fadeIn first" id="inputCity" placeholder="Username" name='uname'>
+                <input type="email" class="fadeIn second" id="inputEmail4" placeholder="Email" name='email'>
+                <input type="submit" class="fadeIn fourth" value="Reset">
+
+            </form>
+
+            <div id="formFooter">
+                <a class="underlineHover" href="{{ url_for('register') }}"><span class="psw">Back to register</span></a>
+                &nbsp;&nbsp;&nbsp;
+                <a class="underlineHover" href="{{ url_for('login') }}"><span class="psw">Back to Login</span></a>
+            </div>
+
+        </div>
+    </div>
+
+{% else %}
+    <div class="wrapper fadeInDown" style="margin-top: -50px;">
+        <div id="formContent">
+            <form method='POST' action="/reset_password">
+
+                <input type="text" class="fadeIn first" id="inputCity" placeholder="Username" name='uname'>
+                <input type="password" class="fadeIn second" id="inputPassword4" placeholder="Password" name='password'>
+
+                <input type="submit" class="fadeIn fourth" value="Reset">
+
+            </form>
+
+            <div id="formFooter">
+                <a class="underlineHover" href="{{ url_for('register') }}"><span class="psw">Back to register</span></a>
+                &nbsp;&nbsp;&nbsp;
+                <a class="underlineHover" href="{{ url_for('login') }}"><span class="psw">Back to Login</span></a>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endif %}
+{% endblock %}

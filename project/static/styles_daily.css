@@ -1,0 +1,155 @@
+/** {
+    box-sizing: border-box;
+}*/
+
+/*[type='radio'] {
+    display: none; 
+}*/
+
+[type='radio']:checked {
+    display: inline;
+}
+
+
+.formContain:hover .CurrencyOverlay {
+    opacity: 1;
+}
+
+.formContain {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.textboxes{
+    margin-top: -20;
+}
+
+.textbox1{
+    padding-left: 15px;
+    width:66%;
+}
+
+.textbox2{
+    padding-left: 20px;
+}
+
+
+/*.image {
+    display: block;
+    width: 40%;
+    height: auto;
+}*/
+
+.overlay {
+    position: absolute;
+    left: 0px;
+    bottom: 0;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5); /* Black see-through */
+    color: #f1f1f1;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    transition: .5s ease;
+    opacity: 0;
+    color: white;
+    font-size: 22px;
+    padding-top: 30px;
+    text-align: center;
+}
+.formContain:hover .overlay {
+    opacity: 1;
+}
+
+.longOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0px;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5); /* Black see-through */
+    color: #f1f1f1;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    transition: .5s ease;
+    opacity: 0;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    padding-top: 30px;
+}
+
+.formContain:hover .longOverlay {
+    opacity: 1;
+}
+
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 120%;
+    left: 120%;
+    transform: translate(-120%, -120%);
+}
+
+.currencyOverlay {
+    position: absolute;
+    bottom: 0;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5); /* Black see-through */
+    color: #f1f1f1;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    transition: .5s ease;
+    opacity: 0;
+    color: white;
+    font-size: 21px;
+    text-align: center;
+    padding-top: 15px;
+}
+.formContain:hover .CurrencyOverlay {
+    opacity: 1;
+}
+
+.scrolling-wrapper {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.scrolling-wrapper:hover {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.categorieslabel {
+    color: grey;
+}
+
+.categorieswrap {
+    background-color: #f0f0f0;
+}
+
+.submitbtn {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.card {
+display: inline-block;
+}
+
+.detailstab {
+    font-size: 17;
+}
+
+.budgetbody {
+    min-width: 350px;
+}
+
+.progress {
+    height: 25px;
+    font-size: 17px;
+}

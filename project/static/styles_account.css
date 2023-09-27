@@ -1,0 +1,140 @@
+.changepassbtn {
+	margin-top: -8px;
+}
+
+
+[type='checkbox'] {
+    display: inline;
+}
+
+.formContain:hover .CurrencyOverlay {
+    opacity: 1;
+}
+
+.formContain {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.overlay {
+    position: absolute;
+    left: 0px;
+    bottom: 0;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5); /* Black see-through */
+    color: #f1f1f1;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    transition: .5s ease;
+    opacity: 0;
+    color: white;
+    font-size: 22px;
+    padding-top: 30px;
+    text-align: center;
+}
+.formContain:hover .overlay {
+    opacity: 1;
+}
+
+.longOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0px;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5); /* Black see-through */
+    color: #f1f1f1;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    transition: .5s ease;
+    opacity: 0;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    padding-top: 30px;
+}
+
+.formContain:hover .longOverlay {
+    opacity: 1;
+}
+
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 120%;
+    left: 120%;
+    transform: translate(-120%, -120%);
+}
+
+.currencyOverlay {
+    position: absolute;
+    bottom: 0;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5); /* Black see-through */
+    color: #f1f1f1;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    transition: .5s ease;
+    opacity: 0;
+    color: white;
+    font-size: 21px;
+    text-align: center;
+    padding-top: 15px;
+}
+.formContain:hover .CurrencyOverlay {
+    opacity: 1;
+}
+
+.scrolling-wrapper {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.scrolling-wrapper:hover {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.categorieslabel {
+    color: grey;
+}
+
+.categorieswrap {
+    background-color: #f0f0f0;
+}
+
+
+.submitbtn {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.spacing {
+	height: 1px;
+}
+
+.spacing2 {
+	height: 4px;
+}
+
+.spacing3 {
+	height: 15px;
+}
+
+.mainbudget {
+	color: grey;
+	padding-bottom: 12px;
+}
+
+.editbudgetbtn {
+	margin-top: -10px;
+}
+
+.newbudgetbtn {
+	margin-top: -20px;
+}

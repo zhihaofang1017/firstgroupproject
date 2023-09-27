@@ -1,0 +1,182 @@
+<!-- Extends the base html file that has all the repeated things that all files need -->
+{% extends 'base.html' %}
+
+<!-- Inserts header elements unique to this file into base template so can still use-->
+{% block head %}
+    <!--  Importing CSS style sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_daily.css') }}">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <title>Daily Overview</title>
+{% endblock %}
+
+
+{% block body %}
+	<div class="paddedForm" id="accordion"> <hr> </div>
+
+	<div class="container">
+
+		<div class="row">
+
+			<div class="col-md-8">
+
+				<div>
+
+					{% if current_user.is_authenticated %}
+					<h2>Update Past Purchase</h2>
+					<form action="{{ url_for('Statistics_edit', username=current_user.username, stuff=edit.id, mode=mode, page=page) }}" method='POST'>
+						<label for="user_id"></label>
+						<label>
+							<input type="hidden" name="user_id" value="{{ current_user.id }}" required>
+						</label>
+
+						<div class="form-group row textboxes">
+							<div class="textbox1">
+								<label for="ref">What was the expense?</label>
+								<input class='form-control' type='text' name='ref' id='ref'
+								 value="{{ edit.ref }}">
+							</div>
+
+							<div class="col-xs-2 textbox2">
+								<label for="cost">Cost</label>
+								<input class='form-control' type='text' name='cost' id='cost' 
+								 value="{{ '{:.2f}'.format(edit.cost) }}">
+							</div>
+						</div>
+
+
+						<!--<button data-toggle="collapse" data-parent="#accordion" href="#collapseOne">-->
+
+						<!--</button>-->
+
+						<!--<div id="collapseOne" class="panel-collapse collapse in">-->
+						<div class="panel-body">
+
+							<!-- containers for currency -->
+							<div class="scrolling-wrapper">
+								<span class="border rounded">
+
+								{% for cu in user_cu %}
+								<label>
+									<div class="container formContain">
+										<img src="{{ url_for('static', filename='currency-symbols/'+cu+'.png') }}" alt="{{cu}}" width="60" height="60">
+
+										<div class="currencyOverlay rounded">{{cu}}</div>
+										{% if edit.currency != cu %}
+										<input name="currency" type="radio" id="currency" value="{{cu}}">
+										
+										{% else %}
+										<input name="currency" type="radio" id="currency" value="{{cu}}" checked>
+										{% endif %}
+
+									</div>
+								</label>
+								{% endfor %}
+
+								</span>
+								<br>
+
+							</div>
+
+						</div>
+						<!--</div>-->
+
+
+						<br>
+
+						<!--<button data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">-->
+
+						<label class="categorieslabel" for='Category'>What category does it belong to?</label>
+						<!--</button>-->
+
+						<!--<div id="collapseTwo" class="panel-collapse collapse in">-->
+						<div class="panel-body">
+
+							<!--<button>Set default</button>-->
+							<!-- containers for categories -->
+							<div class="scrolling-wrapper categorieswrap rounded">
+
+								{% for ca in user_ca %}
+								<label>
+									<div class="container formContain">
+										<img src="{{ url_for('static', filename='icons/'+ca+'.png') }}" alt="{{ca}}" width="90" height="90" class="image">
+
+										{# check default #}
+										{% if edit.category != ca %}
+
+
+											{% if ca == 'communication' or ca == 'electronicdevice' or ca == 'socialnetwork' or ca == 'transportation' or ca == 'entertainment' %}
+											<div class="longOverlay rounded">{{ca}}</div>
+											{% else %}
+											<div class="Overlay rounded">{{ca}}</div>
+											{% endif %}
+										<input name="category" type="radio" id="category" value="{{ca}}">
+										
+										{% else %}
+											{% if ca == 'communication' or ca == 'electronicdevice' or ca == 'socialnetwork' or ca == 'transportation' or ca == 'entertainment' %}
+											<div class="longOverlay rounded">{{ca}}</div>
+											{% else %}
+											<div class="Overlay rounded">{{ca}}</div>
+											{% endif %}
+
+										<input name="category" type="radio" id="category" value="{{ca}}" checked>
+
+										{% endif %}
+
+
+									</div>
+
+								</label>
+								{% endfor %}
+
+
+							</div>
+
+							<br>
+						</div>
+						<!--</div>-->
+
+
+						<hr />
+
+						<h5>
+							<input class="submitbtn rounded" type='submit' value='Update'>
+							  <!--back to page 1 as default-->
+
+							{% if mode == 'normal' %}
+							<a href="{{url_for('Statistics', username=current_user.username, page=page)}}">Back</a>
+							
+							{% elif mode == 'category' %}
+							<a href="{{url_for('Statistics_category', username=current_user.username, page=page, category=edit.category)}}">Back</a>
+
+							{% elif mode == 'search' %}
+							<a href="{{url_for('Statistics_search', username=current_user.username, page=page, stuff=edit.ref)}}">Back</a>
+
+							{% endif %}
+						
+						</h5>
+						
+					</form>
+
+
+					{% else %}
+					<h3>No account. You are not login!</h3>
+
+					{% endif %}
+
+					<br>
+					<br>
+
+				</div>
+
+			</div>
+
+
+		</div>
+		<hr />
+		<!--</row>-->
+
+	</div>
+	<!-- /.container -->
+
+{% endblock %}

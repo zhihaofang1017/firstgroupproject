@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+
+<!-- Provides repeated stuff like header elements for all other html files -->
+
+<html lang="en">
+
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!--  Importing CSS style sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    <!-- Allows other html files to 'add' stuff that isn't repeated in every head-->
+    {% block head %} {% endblock %}
+</head>
+
+
+<body>
+
+    <!-- Navbar at top -->
+    <nav class="navbar navbar-expand-md navbar-light navigation">
+        <a class="navbar-brand fititle" href="/" style="color:grey;">Fi-Tracker</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown" class="alligner">
+            <ul class="navbar-nav ml-auto">
+
+                {# + once user login #}
+                {% if current_user.is_authenticated %}
+
+                {# - user is not setup #}
+                {% if current_user.setup_budget %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('Daily', username=current_user.username) }}">
+                        Track
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('Statistics', username=current_user.username, page=1) }}">
+                        History
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('Insights', username=current_user.username) }}">
+                        Insights
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                        href="{{ url_for('account', username=current_user.username, id=current_user.id) }}">Account
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Support
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{ url_for('QnA') }}">
+                            FAQ's
+                        </a>
+                        <a class="dropdown-item" href="{{ url_for('Privacy') }}">
+                            Privacy Policy
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item login">
+                    <a href="/logout">
+                        <button type="button" class="btn btn-outline-primary">Logout</button>
+                    </a>
+                </li>
+
+                {# - user did not setup #}
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/setup/{{current_user.username}}">
+                        Setup
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                        href="/account/{{current_user.id}}/{{current_user.username}}">
+                        Account
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Support
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{ url_for('QnA') }}">
+                            FAQ's</a>
+                        <a class="dropdown-item" href="{{ url_for('Privacy') }}">
+                            Privacy Policy
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item login">
+                    <a href="/logout">
+                        <button type="button" class="btn btn-outline-primary">Logout</button>
+                    </a>
+                </li>
+                {% endif %}
+
+                {# + at the index page or others --- user is not login #}
+                {% elif not isLogin %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Support
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{ url_for('QnA') }}">
+                            FAQ's
+                        </a>
+                        <a class="dropdown-item" href="{{ url_for('Privacy') }}">
+                            Privacy Policy
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item login">
+                    <a href="/login">
+                        <button type="button" class="btn btn-outline-primary">Login</button>
+                    </a>
+                </li>
+
+                {# + at the login page --- user is not login#}
+                {% else %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">
+                        Home <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Support
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{ url_for('QnA') }}">
+                            FAQ's
+                        </a>
+                        <a class="dropdown-item" href="{{ url_for('Privacy') }}">
+                            Privacy Policy
+                        </a>
+                    </div>
+                </li>
+
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- Allows other html files to 'add' stuff that isn't repeated in every body -->
+    {% block body %} {% endblock %}
+
+
+    <!-- Footer at bottom -->
+    <footer class="foot">
+        <main class="container-fluid y">
+            <div class="row  margin-apply">
+                <div class="col-md-4 col-12 offset-md-1">
+                    <h3>Fi-Tracker</h3>
+                    <p>
+                        Fi-Tracker is a student-oriented budgeting system to provide financial literacy to the
+                        University Students.
+                    </p>
+                    <h5>Copyright for icons photo</h5>
+                    <li><a href="https://icons8.com/icons/cotton">https://icons8.com/icons/cotton</li></a>
+                </div>
+
+                <div class="col-md-4 col-12 ">
+                    <h3>Contacts</h3>
+                    <dl>
+                        <dt>Address:</dt>
+                        <dd> University of Manchester,<br> Oxford Rd <br> M13 9PL</dd>
+                    </dl>
+                    <dl>
+                        <dt>Email :</dt>
+                        <dd><a href="mailto:support@fi-tracker.uk"> support@fi-tracker.uk</a></dd>
+                    </dl>
+                    <dl>
+                        <dt>Call us on:</dt>
+                        <dd>+92 321 276 2810</dd>
+                    </dl>
+                </div>
+
+                <div class="col-md-2 col-12 ">
+                    <h3>Links</h3>
+                    <ul>
+                        <li><a href="#"></a>Services</li>
+                        <li><a href="#"></a>Privacy Policy</li>
+                        <li><a href="#"></a>Blog</li>
+                        <li><a href="#"></a>Security</li>
+                        <li><a href="#"></a>About</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </footer>
+
+
+    <!-- Required javascript -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

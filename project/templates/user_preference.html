@@ -1,0 +1,454 @@
+﻿<!-- Extends the base html file that has all the repeated things that all files need -->
+{% extends 'base.html' %}
+
+<!-- Inserts header elements unique to this file into base template so can still use-->
+{% block head %}
+<!--  Importing CSS style sheet -->
+<link rel="stylesheet" href="{{ url_for('static', filename='styles_account.css') }}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+
+<style>
+@import url("https://fonts.googleapis.com/css?family=Arbutus+Slab|Open+Sans&display=swap");
+.card {
+  cursor: pointer;
+  position: relative;
+  height: 200px;
+	width: 400px;
+  padding-bottom: 220px;
+  --offset-multiplier: 4px;
+  transition: transform 0.6s ease;
+  --translate: 0;
+  transform: translate(var(--translate), var(--translate));
+}
+.card:hover {
+  --offset-multiplier: 6px;
+}
+.card:hover {
+  --translate: calc(-1px * (var(--cards) - 1));
+  transition: transform 0.3s ease;
+}
+
+.child {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1), 0px -4px 8px rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  transition: inherit;
+  --translate: calc(var(--offset) * var(--offset-multiplier));
+  transform: translate(var(--translate), var(--translate));
+  z-index: 5;
+}
+.child:nth-child(1) {
+  --offset: 0;
+  z-index: 4;
+}
+.child:nth-child(2) {
+  --offset: 1;
+  z-index: 3;
+}
+.child:nth-child(3) {
+  --offset: 2;
+  z-index: 2;
+}
+</style>
+
+<!-- add js to join user preference to list -->
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+	(function () {
+		//var test = window.location.pathname
+		//alert(test)
+		//alert("?")
+		$('input[type="submit"]').on('click', function () {  //'input[id="ck_test"]'
+			alert("!")
+			var ucurrency = document.getElementsByName("user_currency");
+			var ucategories = document.getElementsByName("user_categories");
+			//var current_user = document.getElementsById("current_user");
+			var tab1 = document.getElementById("user_currency");
+			var tab2 = document.getElementById("user_categories");
+			var res1 = new Array()
+			var res2 = new Array()
+			for (var i = 0; i < ucurrency.length; i++) {
+				if (ucurrency[i].checked) {
+					res1[i] = tab1.rows[i + 1].cells[1].innerHTML
+				}
+				else {
+					res1[i] = 0
+				}
+			}
+			for (var i = 0; i < ucategories.length; i++) {
+				if (ucategories[i].checked) {
+					res2[i] = tab2.rows[i + 1].cells[1].innerHTML
+				}
+				else {
+					res2[i] = 0
+				}
+			}
+
+			var data = {
+
+				"ucurrency": JSON.stringify(res1),
+				"ucategories": JSON.stringify(res2)
+			};
+
+			alert("sucess")
+			$.ajax({
+				type: "get",
+				//url: "/account/{{current_user.id}}/{{current_user.username}}",
+				url: test,
+				data: data,
+				dataType: "json"
+			});
+
+		});
+
+	})();
+
+</script>
+
+<title>Account Details</title>
+{% endblock %}
+
+
+{% block body %}
+	<div class="paddedForm" id="accordion"><hr>
+
+	<div class="container">
+		<h2>Your Account Details</h2>
+		<div class="row">
+			<div class="col-3">
+				<h5>Username: &nbsp;{{ username }}</h5>
+			</div>
+			<div class="col-4">
+				<h5>Email: &nbsp;{{ user.email }}</h5>
+			</div>
+			<div class="col-5 changepassbtn">
+				<a href="/change/{{current_user.username}}">
+					<button type="button" class="btn btn-outline-primary float-right">Change password</button>
+				</a>
+			</div>
+		</div>
+
+
+
+		<hr>
+		<div class="spacing"></div>
+		<form action="{{ url_for('user_prefer', username=current_user.username, id=current_user.id) }}" method='POST'>
+		
+			<!--<h3>Set Your Default Category & Currency Preference</h3>-->
+			<a href="{{url_for('account', id=current_user.id, username=current_user.username)}}">
+					<button type="button" style="margin-top: -8px;" class="btn btn-outline-primary float-right">Back to add budget</button>
+			</a>
+			<h5>
+				<a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+					Your preferences for currencies and categories
+				</a>
+				
+			</h5>
+			
+				
+			
+			<div id="collapseFive" class="panel-collapse collapse in">
+				<div class="panel-body">
+
+					<br>
+					<p>Your current preference currency: </p>
+					
+					<div class="scrolling-wrapper">
+						<span class="border rounded">
+
+						{% for cu in user_cu %}
+						<label>
+							<div class="container formContain">
+								<img src="{{ url_for('static', filename='currency-symbols/'+cu+'.png') }}" alt="{{cu}}" width="60" height="60">
+
+								<div class="currencyOverlay rounded">{{cu}}</div>
+								
+							</div>
+						</label>
+						{% endfor %}
+
+						</span>
+						<br>
+
+					</div>
+
+					<p>Add your new preference currency: </p>
+					<!-- containers for currency -->
+					<div class="scrolling-wrapper">
+						<span class="border rounded">
+
+						{% for cu in full_cu %}
+						<label>
+							<div class="container formContain">
+								<img src="{{ url_for('static', filename='currency-symbols/'+cu+'.png') }}" alt="{{cu}}" width="60" height="60">
+
+								<div class="currencyOverlay rounded">{{cu}}</div>
+								<input name="user_currency" type="checkbox" id="currency" value="{{cu}}">
+							</div>
+						</label>
+						{% endfor %}
+
+						</span>
+						<br>
+
+					</div>
+
+					<br>
+
+					<p>Your current preference category: </p>
+					
+					<div class="scrolling-wrapper categorieswrap rounded">
+
+						{% for ca in user_ca %}
+						<label>
+							<div class="container formContain">
+								<img src="{{ url_for('static', filename='icons/'+ca+'.png') }}" alt="{{ca}}" width="90" height="90" class="image">
+								{% if ca == 'communication' or ca == 'electronicdevice' or ca == 'socialnetwork' or ca == 'transportation' or ca == 'entertainment' %}
+								<div class="longOverlay rounded">{{ca}}</div>
+								{% else %}
+								<div class="Overlay rounded">{{ca}}</div>
+								{% endif %}
+								
+							</div>
+
+						</label>
+						{% endfor %}
+
+
+					</div>
+
+
+					<p>Add your new preference category: </p>
+					<!-- containers for categories -->
+					<div class="scrolling-wrapper categorieswrap rounded">
+
+						{% for ca in full_ca %}
+						<label>
+							<div class="container formContain">
+								<img src="{{ url_for('static', filename='icons/'+ca+'.png') }}" alt="{{ca}}" width="90" height="90" class="image">
+								{% if ca == 'communication' or ca == 'electronicdevice' or ca == 'socialnetwork' or ca == 'transportation' or ca == 'entertainment' %}
+								<div class="longOverlay rounded">{{ca}}</div>
+								{% else %}
+								<div class="Overlay rounded">{{ca}}</div>
+								{% endif %}
+								<input name="user_categories" type="checkbox" id="category" value="{{ca}}">
+							</div>
+
+						</label>
+						{% endfor %}
+
+
+					</div>
+
+					<br>
+					<h5><input class="submitbtn rounded" type='submit' value='Submit' id="ck_test"></h5>
+
+				</div>
+
+			</div>
+
+		</form>
+
+		<hr>
+
+		<div class="spacing2"></div>
+
+		<div class="row">
+			<div class="col-3">
+				<h5 class="mainbudget">Yearly main budget:</h5>
+			</div>
+			{% if budget is not none %}
+			<div class="col-2">
+				<h5 class="mainbudget">£{{ "{:.2f}".format(budget.year_budget) }}p</h5>
+			</div>
+
+
+
+			{% else %}
+			<div class="col-2">
+				<h5>not set</h5>
+			</div>
+			{% endif %}
+			<div class="col-7">
+				<a class="btn btn-outline-dark float-right editbudgetbtn"
+				   href="/setup/{{current_user.username}}/edit">
+					Edit budget
+				</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-3">
+				<h5>Maintanance loan:</h5>
+				<h5>Accomodation cost:</h5>
+			</div>
+			{% if budget is not none %}
+			<div class="col-2">
+				<h5>£{{ "{:.2f}".format(budget.maintanance_loan) }}p</h5>
+				<h5>£{{ "{:.2f}".format(budget.accomodation_cost) }}p</h5>
+			</div>
+
+			<div class="col-6">
+				<h5>
+					{{ budget.date_maint1.strftime('%d/%m/%Y') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					{{ budget.date_maint2.strftime('%d/%m/%Y') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					{{ budget.date_maint3.strftime('%d/%m/%Y') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</h5>
+				<h5>
+					{{ budget.date_accom1.strftime('%d/%m/%Y') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					{{ budget.date_accom2.strftime('%d/%m/%Y') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					{{ budget.date_accom3.strftime('%d/%m/%Y') }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</h5>
+			</div>
+			{% else %}
+			<div class="col-2">
+				<h5>not set</h5>
+				<h5>not set</h5>
+			</div>
+			{% endif %}
+		</div>
+
+		<hr>
+		<div class="spacing3"></div>
+
+		<a class="btn btn-outline-dark newbudgetbtn float-right" href="/account/monthbudget">+ Category budget</a>
+		
+		
+    <br>
+		<br>
+
+
+
+		<div class="container">
+		  <div class="row">
+		    <div class="col">
+
+          {% for exp in expense_detail %}
+            {{ exp.cost }}
+            {{ exp.category }}
+          {% endfor%}
+
+
+					{% for mbudget in mcost %}
+            {% if mbudget.mcost != none %}
+              {% if mbudget.mcategory != none %}
+
+                    {% if budget.year_budget >= mbudget.mcost %}
+                      <div class="card" style="--cards: 3">
+                        <div class="child">
+                          <br>
+                          <h5 style="text-align:left">Monthly Budget</h5>
+                          <hr>
+                          <h4 style="text-align:center">Budget Item: {{ mbudget.mcategory }}</h4>
+                          <h4 style="text-align:center">Budget Cost: £{{ mbudget.mcost }}</h4>
+                          <hr>
+                          <h5 style="text-align:right">-- from April 1st to April 30th --</h5>
+                        </div>
+                        <div class="child"></div>
+                        <div class="child"></div>
+                      </div>
+                      <br>
+                    {% endif%}
+                    {% if budget.year_budget < mbudget.mcost %}
+                    <section class="content">
+                      <h4 class="shake" style="color:red">Warming! Your Budget is out of range.</h4>
+                      <br>
+                    </section>
+                    <div>
+                    <style>
+                      .shake {
+                        display:inline-block
+                      }
+                      .shake {
+                        display:block;
+                        position:relative;
+                      }
+                      h6.shake,
+                      .shake.inline {
+                        display:inline-block
+                      }
+                      @-webkit-keyframes spaceboots {
+                        0% { -webkit-transform: translate(2px, 1px) rotate(0deg); }
+                        10% { -webkit-transform: translate(-1px, -2px) rotate(-1deg); }
+                        20% { -webkit-transform: translate(-3px, 0px) rotate(1deg); }
+                        30% { -webkit-transform: translate(0px, 2px) rotate(0deg); }
+                        40% { -webkit-transform: translate(1px, -1px) rotate(1deg); }
+                        50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); }
+                        60% { -webkit-transform: translate(-3px, 1px) rotate(0deg); }
+                        70% { -webkit-transform: translate(2px, 1px) rotate(-1deg); }
+                        80% { -webkit-transform: translate(-1px, -1px) rotate(1deg); }
+                        90% { -webkit-transform: translate(2px, 2px) rotate(0deg); }
+                        100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); }
+                      }
+                      .shake:hover,
+                      .shake:focus {
+                        -webkit-animation-name: spaceboots;
+                        -webkit-animation-duration: 0.8s;
+                        -webkit-transform-origin:50% 50%;
+                        -webkit-animation-iteration-count: infinite;
+                        -webkit-animation-timing-function: linear;
+                      }
+                    </style>
+                    </div>
+                      <div class="card" style="--cards: 3">
+                        <div class="child">
+                          <br>
+                          <h5 style="text-align:left">Monthly Budget</h5>
+
+                          <hr>
+                          <h4 style="text-align:center">Budget Item: {{ mbudget.mcategory }}</h4>
+                          <h4 class="shake" style="text-align:center;color:red">Budget Cost: £{{ mbudget.mcost }}</h4>
+                          <hr>
+                          <h5 style="text-align:right">-- from April 1st to April 30th --</h5>
+                        </div>
+                        <div class="child"></div>
+                        <div class="child"></div>
+                      </div>
+                      <br>
+
+                    {% endif %}
+                {% endif %}
+              {% endif %}
+            {% endfor%}
+				</div>
+			</div>
+
+
+		    <!--<div class="col">
+          {% for wbudget in wcost %}
+            {% if wbudget.wcost is not none %}
+              {% if wbudget.wcategory is not none%}
+                <div class="card" style="--cards: 3">
+                  <div class="child">
+                    <br>
+                    <h5 style="text-align:left">Weekly Budget</h5>
+                    <hr>
+                    <h4 style="text-align:center">Budget Item: {{ wbudget.wcategory }}</h4>
+                    <h4 style="text-align:center">Budget Cost: £{{ wbudget.wcost }}</h4>
+                    <hr>
+                    <h5 style="text-align:right">-- in Week 16 --</h5>
+                  </div>
+                  <div class="child"></div>
+                  <div class="child"></div>
+                </div>
+              <br>
+            {% endif%}
+          {% endif%}
+        {% endfor%}
+      </div>-->
+		 </div>
+	</div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+{% endblock %}

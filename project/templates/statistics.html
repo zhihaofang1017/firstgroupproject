@@ -1,0 +1,262 @@
+<!-- Extends the base html file that has all the repeated things that all files need -->
+{% extends 'base.html' %}
+
+<!-- Inserts header elements unique to this file into base template so can still use-->
+{% block head %}
+<!--  Importing CSS style sheet -->
+<link rel="stylesheet" href="{{ url_for('static', filename='styles_statistics.css') }}">
+<!--<link href="{{ url_for('static', filename='bootstrap.min_blog.css') }}" rel="stylesheet">-->
+<!--<link href="{{ url_for('static', filename='blog-home.css') }}" rel="stylesheet">-->
+
+<title>Stats and History</title>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="paddedForm"><hr></div>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="mainlist">
+                <h2 class="my-4">Your Expense History</h2>
+
+                {% if expense %}
+                {% for exp in expense %}
+                
+                {% endfor %}
+
+                <hr />
+                <!-- test -->
+                {% for exp in page_expense %}
+                <div class="card mb-4">
+                    <!--{{ exp }}-->
+
+                    <div class="card-body historybody">
+                        <h5 class="card-title historytitle">
+                            <div class="form-inline">
+
+                                {{ exp.ref }}&nbsp;&nbsp;&nbsp;
+                                <div class="categorytitle">({{ exp.category }})</div>
+                            </div>
+                            <div class="float-right historybtns">
+                                <a class="btn btn-outline-danger btn-sm" href="{{url_for('Statistics_delete', username=current_user.username, stuff=exp.id, mode=datas.mode, page=datas.page)}}">Delete</a>
+                                <a class="btn btn-outline-primary btn-sm" href="{{url_for('Statistics_edit', username=current_user.username, stuff=exp.id, mode=datas.mode, page=datas.page)}}">Edit</a>
+                            </div>
+                        </h5>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Recorded on {{ exp.date }}
+                        <div class="float-right">
+                            Paid {{ exp.currency }} {{ "{:.2f}".format(exp.cost) }}
+                        </div>
+                    </div>
+
+
+                </div>
+                {% endfor %}
+
+
+
+                {% else %}
+                <h3>No records!</h3>
+                {% endif %}
+
+            </div>
+            <!-- Pagination : need change -->
+            {% if expense %}
+            <hr />
+            <ul class="pagination">
+                <!-- normal  -->
+                {% if datas.mode == 'normal' %}
+
+                {% if datas.show_shouye_status==1%}
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p=1'>main page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics', username=current_user.username, page=1) }}'>start page</a></li>
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p={{datas.page-1}}'>previous page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics', username=current_user.username, page=datas.page-1)}}'>previous page</a></li>
+                {%endif%}
+
+                {% for dic in datas.dic_list %}
+                {% if dic==datas.p%}
+                <li class="active"><!--<a href="/statistic/{{current_user.username}}?p={{dic}}" rel="external nofollow" rel="external nofollow">{{dic}}</a>--></li>
+                <li class="active"><a class="page-link" href="{{url_for('Statistics', username=current_user.username, page=dic)}}" rel="external nofollow" rel="external nofollow">{{dic}}</a></li>
+                {%else%}
+                <li><!--<a href="/statistic/{{current_user.username}}?p={{dic}}" rel="external nofollow" rel="external nofollow">{{dic}}</a>--></li>
+                <li class='page-item'><a class="page-link" href="{{url_for('Statistics', username=current_user.username, page=dic)}}" rel="external nofollow" rel="external nofollow">{{dic}}</a></li>
+                {%endif%}
+                {%endfor%}
+
+                {% if datas.page < datas.total%}
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p={{datas.page+1}}'>next page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics', username=current_user.username, page=datas.page+1)}}'>next page</a></li>
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p={{datas.total}}'>end page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics', username=current_user.username, page=datas.total)}}'>end page</a></li>
+                {%endif%}
+                <br />
+                <!--<div class="col" style="text-align:right;max-width:100;text-anchor:middle">total : {{datas.total}}</div>-->
+                <div class="col" style="text-align:right;">Current page: {{datas.page}}</div>
+
+                <!-- end normal -->
+
+                <!-- category -->
+
+                {% elif datas.mode == 'category' %}
+
+                <!-- test -->
+                <!--{{datas.user_list}}-->
+                {% if datas.show_shouye_status==1%}
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p=1'>main page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics_category', username=current_user.username, page=1, category=datas.user_list[0].category) }}'>start page</a></li>
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p={{datas.page-1}}'>previous page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics_category', username=current_user.username, page=datas.page-1, category=datas.user_list[0].category)}}'>previous page</a></li>
+                {%endif%}
+
+                {% for dic in datas.dic_list %}
+                {% if dic==datas.p%}
+                <li class="active"><!--<a href="/statistic/{{current_user.username}}?p={{dic}}" rel="external nofollow" rel="external nofollow">{{dic}}</a>--></li>
+
+                <li class="active"><a class="page-link" href="{{url_for('Statistics_category', username=current_user.username, page=dic, category=datas.user_list[0].category)}}" rel="external nofollow" rel="external nofollow">{{dic}}</a></li>
+                {%else%}
+                <li><!--<a href="/statistic/{{current_user.username}}?p={{dic}}" rel="external nofollow" rel="external nofollow">{{dic}}</a>--></li>
+                <li class='page-item'><a class="page-link" href="{{url_for('Statistics_category', username=current_user.username, page=dic, category=datas.user_list[0].category)}}" rel="external nofollow" rel="external nofollow">{{dic}}</a></li>
+                {%endif%}
+                {%endfor%}
+
+                {% if datas.page < datas.total%}
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p={{datas.page+1}}'>next page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics_category', username=current_user.username, page=datas.page+1, category=datas.user_list[0].category)}}'>next page</a></li>
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p={{datas.total}}'>end page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics_category', username=current_user.username, page=datas.total, category=datas.user_list[0].category)}}'>end page</a></li>
+                {%endif%}
+                <br />
+
+                <div class="col" style="text-align:right;">Current page: {{datas.page}}</div>
+
+                <!-- end category -->
+
+                <!-- search -->
+
+                {% elif datas.mode == 'search' %}
+
+                {% if datas.show_shouye_status==1%}
+
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p=1'>main page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics_search', username=current_user.username, page=1, stuff=datas.user_list[0].ref) }}'>start page</a></li>
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p={{datas.page-1}}'>previous page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics_search', username=current_user.username, page=datas.page-1, stuff=datas.user_list[0].ref)}}'>previous page</a></li>
+                {%endif%}
+
+                {% for dic in datas.dic_list %}
+                {% if dic==datas.p%}
+                <li class="active"><!--<a href="/statistic/{{current_user.username}}?p={{dic}}" rel="external nofollow" rel="external nofollow">{{dic}}</a>--></li>
+
+                <li class="active"><a class="page-link" href="{{url_for('Statistics_search', username=current_user.username, page=dic, stuff=datas.user_list[0].ref)}}" rel="external nofollow" rel="external nofollow">{{dic}}</a></li>
+                {%else%}
+                <li><!--<a href="/statistic/{{current_user.username}}?p={{dic}}" rel="external nofollow" rel="external nofollow">{{dic}}</a>--></li>
+                <li class='page-item'><a class="page-link" href="{{url_for('Statistics_search', username=current_user.username, page=dic, stuff=datas.user_list[0].ref)}}" rel="external nofollow" rel="external nofollow">{{dic}}</a></li>
+                {%endif%}
+                {%endfor%}
+
+                {% if datas.page < datas.total%}
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p={{datas.page+1}}'>next page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics_search', username=current_user.username, page=datas.page+1, stuff=datas.user_list[0].ref)}}'>next page</a></li>
+                <li class=''><!--<a href='/statistic/{{current_user.username}}?p={{datas.total}}'>end page</a>--></li>
+                <li class='page-item'><a class="page-link" href='{{url_for('Statistics_search', username=current_user.username, page=datas.total, stuff=datas.user_list[0].ref)}}'>end page</a></li>
+                {%endif%}
+                <br />
+
+                <div class="col" style="text-align:right;">Current page: {{datas.page}}</div>
+
+                <!-- end search -->
+
+
+                {% endif %}
+
+            </ul>
+
+            {% endif %}
+
+            <!--<ul class="pagination justify-content-center mb-4">
+                <li class="page-item">
+                    <a class="page-link" href="#">&larr; Older</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Newer &rarr;</a>
+                </li>
+            </ul>-->
+
+        </div>
+        {#<!--<form action='{{ url_for('Statistics', username=current_user.username) }}' method='post'>-->#}
+        <!-- Sidebar Widgets Column -->
+
+        <div class="col-md-4">
+
+            <!-- Search Widget:  for a certain name-->
+            <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                {%if expense%}
+                <form action="{{ url_for('Statistics_search', username=current_user.username, page=1, stuff=datas.user_list[0].ref) }}" method="post">
+                {%else%}
+                <form action="{{ url_for('Statistics_search', username=current_user.username, page=1, stuff="None") }}" method="post">
+                {%endif%}
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input name="search" id="" type="search" class="form-control" placeholder="Search for...">
+                            <span class="input-group-append">
+                                <button class="btn btn-secondary" type="submit">Go!</button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Categories Widget: divide into two columns --- display only users have -->
+            <div class="card my-4">
+                <h5 class="card-header">Categories</h5>
+
+                <!--<input type="button" text-align="center" name="FILTER" color="black" value="FILTER - your categories">-->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                <!-- insert one 'all' categories -->
+                                <li>
+                                    <a href="{{url_for('Statistics', username=current_user.username, page=1)}}" />ALL</a>
+                                </li>
+
+                                {% for list in category_list0 %}
+                                <li>
+                                    <!--<a href="/statistics/{{current_user.username}}/category/{{ list }}" />{{ list }}</a>-->
+                                    <a href="{{url_for('Statistics_category', username=current_user.username, page=1, category=list) }}" />{{ list }}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                {% for list in category_list1 %}
+                                <li>
+                                    <!--<a href="/statistics/{{current_user.username}}/category/{{ list }}" />{{ list }}</a>-->
+                                    <a href="{{url_for('Statistics_category', username=current_user.username, page=1, category=list) }}" />{{ list }}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!--</form>-->
+    </div>
+    <hr />
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+
+{% endblock %}

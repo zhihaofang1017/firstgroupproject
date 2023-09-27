@@ -1,0 +1,38 @@
+<!-- Extends the base html file that has all the repeated things that all files need -->
+{% extends 'base.html' %}
+
+<!-- Inserts header elements unique to this file into base template so can still use-->
+{% block head %}
+    <!--  Importing CSS style sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_login.css') }}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <title>Change Password</title>
+
+{% endblock %}
+
+{% block body %}
+
+<h4 style="background-color:#f1f1f1; text-align: center !important; padding: 5px;" class="float-centre">
+    Reset Password</h4>
+
+    <div class="wrapper fadeInDown" style="margin-top: -50px;">
+        <div id="formContent">
+
+            <form action="{{ url_for('changepassword', username = current_user.username) }}" method="POST">
+                <input type="password" class="fadeIn first" name="oldpass" id="inputPassword3" placeholder="Current Password">
+                <input type="password" class="fadeIn second" name="pass1" id="inputPassword3" placeholder="New Password">
+                <input type="password" class="fadeIn third" name="pass2" id="inputPassword3" placeholder="Repeat New Password">
+                <input type="submit" class="fadeIn fourth" value="Update">
+            </form>
+
+            <div id="formFooter">
+                <a href="{{url_for('account', id=current_user.id, username=current_user.username)}}" class="underlineHover"><span class="psw">Back to account</span></a>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

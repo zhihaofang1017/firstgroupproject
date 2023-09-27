@@ -1,0 +1,83 @@
+<!-- Extends the base html file that has all the repeated things that all files need -->
+{% extends 'base.html' %}
+
+<!-- Inserts header elements unique to this file into base template so can still use-->
+{% block head %}
+    <!--  Importing CSS style sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_index.css') }}">
+
+    <title>Fi-Track</title>
+{% endblock %}
+
+
+{% block body %}
+    <header>
+        <div id="demo" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://images.pexels.com/photos/5707563/pexels-photo-5707563.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="wall"
+                        width="1920" height="270">
+                    <div class="carousel-caption">
+                        <!--{% if current_user.is_authenticated %}
+                        <h1>Welcome! {{ current_user.username }}</h1>
+                        {% endif %}-->
+                        <h3>Unthink Your Money</h3>
+                        <p>
+                            Achive your Financial goals while upgrading your Uni
+                            Experience.
+                        </p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                     <img src="https://images.pexels.com/photos/5707563/pexels-photo-5707563.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="wall"
+                        width="1920" height="270">
+                    <div class="carousel-caption">
+                        <h3>Save While Spending</h3>
+                        <p>Learn the secrets of Saving Money.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                     <img src="https://images.pexels.com/photos/5707563/pexels-photo-5707563.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="wall"
+                        width="1920" height="270">
+                    <div class="carousel-caption">
+                        <h3>Unthink Money</h3>
+                        <p>Learn Money life hacks to achive your financial goals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <section class="container ourservices text-center">
+        <!--H1 class=" text-secondary ">Services</H1-->
+
+        <div class="row rowdesign ">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-10 d-block m-auto">
+                <div class=" imgsetting d-block m-auto bg-info">
+                    <i class="fas fa-balance-scale-left fa-4x text-white"></i>
+                </div>
+                <h3> Budgeting </h3>
+                <p>Budget your periodic expenditure to prevent financial hassle during your academic life. </p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-10 d-block m-auto">
+                <div class=" imgsetting d-block m-auto bg-info ">
+                    <i class=" fa fas fa-chart-pie fa-5x text-white"></i>
+                </div>
+                <h3> Visualization</h3>
+                <p>Visualization provides an abstract view of the period's expenditure in the form of graphs and
+                    Pie-charts.
+                </p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-10 d-block m-auto">
+                <div class=" imgsetting d-block m-auto bg-info">
+                    <i class="fas fa-comments-dollar fa-5x text-white"></i>
+                </div>
+                <h3> Financial Guidence </h3>
+                <p> Personalized financial solutions based on expenditure patterns available funds. </p>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}

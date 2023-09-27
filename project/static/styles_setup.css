@@ -1,0 +1,19 @@
+.spacing {
+	height: 15px;
+}
+
+.boxesbox {
+	height: 75px;
+	background-color: #f0f0f0;
+}
+
+.boxesinner {
+	padding-left: 20px;
+	padding-top: 10px;
+	margin-bottom: -10px;
+}
+
+.submitbtn {
+    padding-left: 30px;
+    padding-right: 30px;
+}

@@ -1,0 +1,415 @@
+<!-- Extends the base html file that has all the repeated things that all files need -->
+{% extends 'base.html' %}
+
+<!-- Inserts header elements unique to this file into base template so can still use-->
+{% block head %}
+    <!--  Importing CSS style sheet-->
+    <title>Editing Budget</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_setup.css') }}">
+
+    <style>
+    * {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+
+h2 {
+
+  text-align: center;
+}
+
+h5 {
+  margin: 16px;
+}
+
+.container {
+  margin-top: 0px;
+  padding: 15px;
+
+}
+
+.select-box {
+  position: relative;
+  display:flex;
+  width:1110px;
+  flex-direction: column;
+}
+
+.select-box .options-container {
+  background-color: #F5F5F5;
+  color: black;
+  max-height: 0;
+  width: 100%;
+  opacity: 0;
+  transition: all 0.4s;
+  border-radius: 8px;
+  overflow: hidden;
+  order: 1;
+}
+
+.selected {
+  background: #F5F5F5;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: black;
+  position: relative;
+  font-size:18px;
+  order: 0;
+}
+
+.selected::after {
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  position: absolute;
+  height: 100%;
+  width: 32px;
+  right: 10px;
+  top: 5px;
+
+  transition: all 0.4s;
+}
+
+
+.select-box .options-container.active {
+  margin-top: 54px;
+  max-height: 240px;
+  opacity: 1;
+  overflow-y: scroll;
+}
+
+.select-box .options-container.active + .selected::after {
+  transform: rotateX(180deg);
+  top: -6px;
+}
+
+.select-box .options-container::-webkit-scrollbar {
+  width: 8px;
+  background: red;
+  border-radius: 0 8px 8px 0;
+}
+
+.select-box .options-container::-webkit-scrollbar-thumb {
+  background: orange;
+  border-radius: 0 8px 8px 0;
+}
+
+.select-box .option,
+.selected {
+  padding: 12px 24px;
+  cursor: pointer;
+
+}
+
+.select-box .disabled {
+  padding: 12px 24px;
+  cursor: pointer;
+  font-weight: bold;
+
+}
+
+.select-box .option:hover {
+  background:#DCDCDC;
+}
+
+
+.select-box label {
+  cursor: pointer;
+
+}
+
+.select-box .disabled .radio {
+  display: none;
+}
+
+.search-box input{
+  width: 100%;
+  padding: 12px 16px;
+  font-family:"Roboto", sans-serif;
+  font-size: 16px;
+  position: absolute;
+  border-radius: 8px 8px 0 0;
+  z-index: 100;
+  border: 8px solid #F5F5F5;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s;
+
+}
+
+.search-box input:focus {
+  outline: none;
+
+}
+
+.select-box .options-container.active ~ .search-box input{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+    </style>
+
+{% endblock %}
+
+{% block body %}
+  <div class="paddedForm" id="accordion"> <hr> </div>
+
+  <div class="container">
+
+    <form action='{{url_for('account', id=current_user.id, username=current_user.username)}}' method='POST'>
+
+      <div>
+        <div id="clockDisplay" class="container" style="margin-left: -13px; margin-top: -30px;font-size:34px; display:inline;"></div>
+        <a href="/account/monthbudget" class="cool-link" style="display:inline; font-size:18px; float:right">Switch to Monthly Plan</a>
+      </div>
+
+      <div style="height:10px;"></div>
+
+      <div class="select-box">
+
+        <div class="options-container">
+
+          <div class="disabled">
+            <input type="radio" class="radio" id="Food and Drinks" name="wcategory"/>
+            <label for="Food and Drinks">Food and Drinks</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Restaurants" name="wcategory" value="food"/>
+            <label for="Restaurants">Restaurants</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="School Meals" name="wcategory" value="food"/>
+            <label for="School Meals">School Meals</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Snacks" name="wcategory" value="snacks"/>
+            <label for="Snacks">Snacks</label>
+          </div>
+
+          <div class="disabled">
+            <input type="radio" class="radio" id="Transport" name="wcategory"/>
+            <label for="Transport">Transport</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Public Transportation" name="wcategory" value="transportation"/>
+            <label for="Public Transportation">Public Transportation</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Private Car" name="wcategory" value="car"/>
+            <label for="Private Car">Private Car</label>
+          </div>
+
+          <div class="disabled">
+            <input type="radio" class="radio" id="Entertainment" name="wcategory"/>
+            <label for="Entertainment">Entertainment</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Social Network" name="wcategory" value="socialnetwork"/>
+            <label for="Social Network">Social Network</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Electronic Devices" name="wcategory" value="electronicdevices"/>
+            <label for="Electronic Devices">Electronic Devices</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Entertainment" name="wcategory" value="entertainment"/>
+            <label for="Entertainment">Entertainment</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Sports" name="wcategory" value="sports"/>
+            <label for="Sports">Sports</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Communication" name="wcategory" value="communication"/>
+            <label for="Communication">Communication</label>
+          </div>
+
+          <div class="disabled">
+            <input type="radio" class="radio" id="Shopping" name="wcategory"/>
+            <label for="Shopping">Shopping</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Shopping" name="wcategory" value="shopping"/>
+            <label for="Shopping">Shopping</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Furniture" name="wcategory" value="furniture"/>
+            <label for="Furniture">Furniture</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Daily Use" name="wcategory" value="dailyuse"/>
+            <label for="Daily Use">Daily Use</label>
+          </div>
+
+          <div class="disabled">
+            <input type="radio" class="radio" id="Travelling" name="wcategory"/>
+            <label for="Travelling">Travelling</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Travelling" name="wcategory" value="travel"/>
+            <label for="ravelling">Travelling</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Souvenir" name="wcategory" value="souvenir"/>
+            <label for="Souvenir">Souvenir</label>
+          </div>
+
+          <div class="disabled">
+            <input type="radio" class="radio" id="Education" name="wcategory"/>
+            <label for="Education">Education</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Education" name="wcategory" value="education"/>
+            <label for="Education">Education</label>
+          </div>
+
+          <div class="disabled">
+            <input type="radio" class="radio" id="HealthCare" name="wcategory"/>
+            <label for="HealthCare">HealthCare</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="HealthCare" name="wcategory" value="healthcare"/>
+            <label for="HealthCare">HealthCare</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Beauty" name="wcategory" value="beauty"/>
+            <label for="Beauty">Beauty</label>
+          </div>
+
+          <div class="disabled">
+            <input type="radio" class="radio" id="Other" name="wcategory"/>
+            <label for="Other">Other</label>
+          </div>
+
+          <div class="option">
+            <input type="radio" class="radio" id="Other" name="wcategory" value="other"/>
+            <label for="Other">Other</label>
+          </div>
+        </div>
+
+        <div class="selected">
+            Select Budget Category
+        </div>
+
+        <div class="search-box">
+          <input type="text" placeholder="Searching for..."/>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h5 style="margin-left: 5px;">How much money to set aside for this category?</h5>
+        </div>
+        <div class="col">
+          <input class='form-control' style="margin-top: 10px;" type='number' name='wcost' id='wcost' min='1' required="required" onkeyup="if(this.value<0){this.value= this.value * -1}" placeholder='0.00' required>
+        </div>
+      </div>
+
+      <hr>
+      <h5 style="margin-left: 0px;">
+          <input class="submitbtn rounded" type='submit' value='Create'>
+      </h5>
+    </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <a href="{{url_for('account', id=current_user.id, username=current_user.username)}}">
+      <button type="button" class="btn btn-outline-primary float-right">Back to add budget</button>
+    </a>
+    <br>
+    <br>
+    <hr>
+  </div>
+
+
+
+
+
+  <script>
+    const selected = document.querySelector(".selected");
+    const optionsContainer = document.querySelector(".options-container");
+    const searchBox = document.querySelector(".search-box input");
+
+    const optionsList = document.querySelectorAll(".option");
+
+    selected.addEventListener("click", () => {
+        optionsContainer.classList.toggle("active");
+
+        searchBox.value = "";
+        filterList("");
+
+        if (optionsContainer.classList.contains("active")) {
+            searchBox.focus();
+        }
+    });
+
+    optionsList.forEach(o => {
+        o.addEventListener("click", () => {
+            selected.innerHTML = o.querySelector("label").innerHTML;
+            optionsContainer.classList.remove("active");
+        });
+    });
+
+    searchBox.addEventListener("keyup", function(e) {
+        filterList(e.target.value);
+    });
+
+    const filterList = searchTerm => {
+        searchTerm = searchTerm.toLowerCase();
+        optionsList.forEach( option => {
+            let label = option.firstElementChild.nextElementSibling.innerText.toLowerCase();
+            if (label.indexOf(searchTerm) != -1) {
+                option.style.display = "block";
+            }
+            else
+            {
+                option.style.display = "none";
+            }
+        });
+    };
+
+    function renderTime(){
+      todaydate = new Date();
+      var oneJan =  new Date(todaydate.getFullYear(), 0, 1);
+      var numberOfDays =  Math.floor((todaydate - oneJan) / (24 * 60 * 60 * 1000));
+      var result = Math.ceil(( todaydate.getDay() + 1 + numberOfDays) / 7);
+
+      var myClock = document.getElementById("clockDisplay");
+      myClock.textContent = "Weekly Budget for Week " + result;
+      myClock.innerText = "Weekly Budget for Week " + result;
+
+
+      setTimeout("renderTime()", 1000);
+    }
+    renderTime();
+
+
+  </script>
+
+
+{% endblock %}

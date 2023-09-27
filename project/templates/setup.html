@@ -1,0 +1,290 @@
+<!-- Extends the base html file that has all the repeated things that all files need -->
+{% extends 'base.html' %}
+
+<!-- Inserts header elements unique to this file into base template so can still use-->
+{% block head %}
+<!--  Importing CSS style sheet -->
+<link rel="stylesheet" href="{{ url_for('static', filename='styles_setup.css') }}">
+
+<!--  jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- Bootstrap Date-Picker Plugin -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
+<!--script>
+	$('.datepicker').datepicker({
+		format: 'dd/mm/yyyy',
+		autoclose: true,
+	});
+</script-->
+<script type="text/javascript">
+	//alert('test');
+	function myFunction() {
+		//alert('test');
+        var x = document.getElementById("loan");
+        x.value = x.value.toUpperCase();
+	}
+
+
+	function validate() {
+
+        var inputItem1 = document.getElementsByName('rad')
+		var inputItem2 = document.getElementsByName('rad2')
+        var inputItem0 = document.getElementById('loan')
+		//alert('test111' + inputItem1.value);
+		// alert('test222' + inputItem0.value);
+		var radvalue;
+		var radvalue2;
+        for (var i = 0, length = inputItem1.length; i < length; i++) {
+            if (inputItem1[i].checked) {
+                
+                radvalue = inputItem1[i].value;
+                //alert(radvalue);
+                break;
+            }
+		}
+        for (var i = 0, length = inputItem2.length; i < length; i++) {
+            if (inputItem2[i].checked) {
+                // do whatever you want with the checked radio
+                radvalue2 = inputItem2[i].value;
+                //alert(radvalue2);
+                break;
+            }
+        }
+        //alert('test before if')
+        //console.log(inputItem1.value)
+        if (!radvalue || !radvalue2) {
+			// alert('12Could not be empty both, should click tick boxes or enter number.')
+			if (inputItem0.value == '') {
+				alert('Could not be empty both, should click tick boxes for two line for maintanance loan or input a number.')
+			}
+			else {
+                //alert('test if input have value.')
+                $('#form').submit();
+                return true;
+            }
+			//console.log('Could not be empty both, should click tick boxes or enter number.')
+			//inputItem1.value = ''
+			//inputItem1.focus()
+   //         inputItem2.value = ''
+   //         inputItem2.focus()
+			return false;
+		}
+		else {
+			
+            //alert('test if both have value.')
+			
+			$('#form').submit();
+			return true;
+		}
+        //alert('test after if')
+		return false;
+		////console.log(inputItem2.value)
+		//if (!radvalue2) {
+  //          alert('2Could not be empty both, should click tick boxes or enter number.')
+  //          console.log('Could not be empty both, should click tick boxes or enter number.')
+  //          inputItem2.value = ''
+		//	inputItem2.focus()
+  //          return false;
+		//}
+  //      else {
+
+  //          alert('test if rad2 have value.')
+  //          //$('#form').submit();
+  //          //         return true;
+  //      }
+
+		//if (radvalue && radvalue2) {
+		//	alert('test if both have value.')
+		//	$('#form').submit();
+		//}
+		//else {
+		//	return false;
+  //      }
+
+	}
+
+
+
+
+
+</script>
+
+<title>Initial Setup</title>
+{% endblock %}
+
+
+{% block body %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class=flashes>
+	{% for category, message in messages %}
+	<div class="alert alert-{{category}} alert-dismissible fade show justify-content-center text-center" role="alert">
+		<strong>Messege</strong> {{message}}
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	{% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<div class="paddedForm">
+	<hr>
+
+	<div class="container">
+
+		<h2>Let's Calculate Your Budget</h2>
+		<form action="{{ url_for('Setup', username=username) }}" method='POST'>
+
+			<div class="row">
+
+				<div class="col">
+					<label for='loan'>Enter maintanance loan (or select relevant options below)</label>
+					<input class='form-control' type='search' name='loan' id='loan' placeholder='0.00' onblur="myFunction()">
+
+					<div class="spacing"></div>
+					<div class="rounded boxesbox">
+						<div class="boxesinner">
+							<!--<input type="hidden" id="min" value="" name="rad" checked>-->
+							<label for="rad"></label>
+							<input type="radio" id="min" value="min" name="rad">
+							<label for="min" style="font-size:14px;">&nbsp;Minimum Loan</label>
+							&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+							<input type="radio" id="mid" value="mid" name="rad">
+							<label for="mid" style="font-size:14px;">&nbsp;~Mid Range Loan</label>
+							&nbsp;&nbsp;  &nbsp;&nbsp;
+							<input type="radio" id="max" value="max" name="rad">
+							<label for="max" style="font-size:14px;">&nbsp;Maximum Loan &nbsp;</label>
+
+							<hr style="margin-top: -5px; margin-bottom: 3px;">
+
+
+							<!--<input type="hidden" id="min" value="" name="rad2" checked>-->
+							<label for="rad2"></label>
+							<input type="radio" id="home" value="home" name="rad2">
+							<label for='home' style="font-size:14px;">&nbsp;Living at Home</label>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" id="nolnd" value="nolnd" name="rad2">
+							<label for='nolnd' style="font-size:14px;">&nbsp;Away out London</label>
+							&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+							<input type="radio" id="lnd" value="lnd" name="rad2">
+							<label for='lnd' style="font-size:14px;">&nbsp;Away in London  &nbsp;</label>
+							</label>
+						</div>
+					</div>
+
+					<div class="spacing"></div>
+					<label for='mtdate'>Check dates of loan installment payments</label>
+
+					<!--input class="datepicker" data-date-format="mm/dd/yyyy"-->
+					<div class="row">
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="mtdate1" id="mtdate1" value="10/09/2020">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="mtdate2" id="mtdate2" value="18/01/2021">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="mtdate3" id="mtdate3" value="19/04/2021">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+				<div class="col">
+					<label for='acost'>Enter accomodation cost (or select from dropdown)</label><!-- for the chosen period-->
+					<input class='form-control' type='search' name='acost' id='acost' placeholder='0.00'>
+
+					<div class="spacing"></div>
+					<div class="input-group mb-3">
+						<label class="input-group-text" for="accom">UoM Fallowfield</label>
+						<select class="custom-select" name="optionaccom" id="optionaccom">
+							<option selected value="-1">Choose...</option>
+							<option value="1">Ashburne Hall</option>
+							<option value="2">Oak House</option>
+							<option value="3">Owens Park</option>
+							<option value="4">Richmond Park</option>
+							<option value="5">Sheavyn House</option>
+							<option value="6">Unsworth Park</option>
+							<option value="7">Woolton Hall</option>
+						</select>
+					</div>
+
+					<label for='mtdate'>Check dates of accomodation payments - if not living at home</label>
+
+					<!--input class="datepicker" data-date-format="mm/dd/yyyy"-->
+					<div class="row">
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="acdate1" id="acdate1" value="22/10/2020">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="acdate2" id="acdate2" value="21/01/2021">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="acdate3" id="acdate3" value="26/04/2021">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<br>
+			<h5><button class="submitbtn rounded" type="submit" onclick="return validate()" value="Submit">Submit</button></h5>
+			<!--<h5><input class="submitbtn rounded" type='submit' value='Submit' onclick="validate()"></h5>-->
+		</form>
+
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<hr>
+
+	</div>
+
+</div>
+
+{% endblock %}

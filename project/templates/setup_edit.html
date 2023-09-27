@@ -1,0 +1,236 @@
+<!-- Extends the base html file that has all the repeated things that all files need -->
+{% extends 'base.html' %}
+
+<!-- Inserts header elements unique to this file into base template so can still use-->
+{% block head %}
+    <!--  Importing CSS style sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_setup.css') }}">
+
+    <!--  jQuery -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<!-- Bootstrap Date-Picker Plugin -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+	<!--script>
+		$('.datepicker').datepicker({
+			format: 'dd/mm/yyyy',
+			autoclose: true,
+		});
+	</script-->
+
+    <title>Initial Setup</title>
+{% endblock %}
+
+
+{% block body %}
+	<div class="paddedForm"> <hr>
+
+	<div class="container">
+
+		<h2>Let's Calculate Your Budget</h2>
+		<form action="{{ url_for('Setup_edit', username=username) }}" method='POST'>
+
+			<!--label for='period'>Please choose the budget period:</label>
+	<div class="input-group mb-3">
+	  <select class="custom-select" id="inputGroupSelect02">
+		<option selected>Choose...</option>
+		<option value="1">Every Week</option>
+		<option value="2">Every Month</option>
+		<option value="3">Every quarter</option>
+		<option value="4">Every Year</option>
+	  </select>
+	</div-->
+
+			<div class="row">
+
+				<div class="col">
+					<label for='loan'>Enter maintanance loan (or select relevant options below)</label>
+					<input class='form-control' type='search' name='loan' id='loan'
+						   value="{{ '{:.2f}'.format(budget.maintanance_loan) }}" placeholder='0.00'>
+
+					<div class="spacing"></div>
+					<div class="rounded boxesbox">
+						<div class="boxesinner">
+						    <input type="radio" id="min" value="min" name="rad">
+						    <label for="min" style="font-size:14px;">&nbsp;Minimum Loan</label>
+						    &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+						    <input type="radio" id="mid" value="mid" name="rad">
+						    <label for="mid" style="font-size:14px;">&nbsp;~Mid Range Loan</label>
+						    &nbsp;&nbsp;  &nbsp;&nbsp;
+						    <input type="radio" id="max" value="max" name="rad">
+						    <label for="max" style="font-size:14px;">&nbsp;Maximum Loan &nbsp;</label>
+
+						    <hr style="margin-top: -5px; margin-bottom: 3px;">
+
+							<input type="radio" id="home" value="home" name="rad2">
+							<label for='home' style="font-size:14px;">&nbsp;Living at Home</label>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						    <input type="radio" id="nolnd" value="nolnd" name="rad2">
+						    <label for='nolnd' style="font-size:14px;">&nbsp;Away out London</label>
+						    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+						    <input type="radio" id="lnd" value="lnd" name="rad2">
+						    <label for='lnd' style="font-size:14px;">&nbsp;Away in London  &nbsp;</label>
+						    </label>
+						</div>
+					</div>
+
+					<div class="spacing"></div>
+					<label for='mtdate'>Check dates of loan installment payments</label>
+
+					<!--input class="datepicker" data-date-format="mm/dd/yyyy"-->
+					<div class="row">
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="mtdate1" id="mtdate1"
+									   value="{{ budget.date_maint1.strftime('%d/%m/%Y') }}">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="mtdate2" id="mtdate2"
+									   value="{{ budget.date_maint2.strftime('%d/%m/%Y') }}">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="mtdate3" id="mtdate3"
+									   value="{{ budget.date_maint3.strftime('%d/%m/%Y') }}">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+				<div class="col">
+					<label for='acost'>Enter accomodation cost (or select from dropdown)</label><!-- for the chosen period-->
+					<input class='form-control' type='search' name='acost' id='acost'
+						   value="{{ '{:.2f}'.format(budget.accomodation_cost) }}" placeholder='0.00'>
+
+					<div class="spacing"></div>
+					<div class="input-group mb-3">
+						<label class="input-group-text" for="accom">UoM Fallowfield</label>
+						<select class="custom-select" name="optionaccom" id="optionaccom">
+							<option selected value="-1">Choose...</option>
+							<option value="1">Ashburne Hall</option>
+							<option value="2">Oak House</option>
+							<option value="3">Owens Park</option>
+							<option value="4">Richmond Park</option>
+							<option value="5">Sheavyn House</option>
+							<option value="6">Unsworth Park</option>
+							<option value="7">Woolton Hall</option>
+						</select>
+					</div>
+
+					<label for='mtdate'>Check dates of accomodation payments - if not living at home</label>
+
+					<!--input class="datepicker" data-date-format="mm/dd/yyyy"-->
+					<div class="row">
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="acdate1" id="acdate1"
+									   value="{{ budget.date_accom1.strftime('%d/%m/%Y') }}">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="acdate2" id="acdate2"
+									   value="{{ budget.date_accom2.strftime('%d/%m/%Y') }}">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm">
+							<div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="true">
+								<input type="text" class="form-control datebox"
+									   name="acdate3" id="acdate3"
+									   value="{{ budget.date_accom3.strftime('%d/%m/%Y') }}">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+
+			<!--label for='cost'>Enter full cost on the chosen category for the chosen period: </label>
+	<input class='form-control' type='text' name='cost' id='cost' placeholder='0.00'>
+
+
+	<select class="custom-select" id="inputGroupSelect02" name="inputGroupSelect02" data-live-search="true">
+	  <option value>Choose...</option>
+	  <optgroup label="Food and Drinks">
+		<option value="1">Restaurants</option>
+		<option value="2">School Meals</option>
+	  </optgroup>
+	  <optgroup label="Transport">
+		<option value="3">Public Transportation</option>
+		<option value="4">Parking</option>
+	  </optgroup>
+	  <optgroup label="Entertainment">
+		<option value="5">Electronic Devices</option>
+	  </optgroup>
+	  <optgroup label="Shopping">
+		<option value="6">Clothing</option>
+		<option value="7">Neccessities</option>
+	  </optgroup>
+	  <optgroup label="Travelling">
+		<option value="9">Souvenir</option>
+	  </optgroup>
+	</select>
+
+
+	<br-->
+			<br>
+			<h5>
+				<input class="submitbtn rounded" type='submit' value='Submit'>
+			</h5>
+			
+		</form>
+		<!--hr>
+
+		<br>
+		<h3>Weekly budget ~ £ budget*7 }}p for  username }}</h3-->
+		<br>
+		<br>
+		<br>
+		
+		<a href="{{url_for('account', id=current_user.id, username=current_user.username)}}">
+			<button type="button" class="btn btn-outline-primary float-right">Back to add budget</button>
+		</a>
+		<br>
+		<br>
+		<hr>
+
+
+	</div>
+
+	</div>
+
+{% endblock %}

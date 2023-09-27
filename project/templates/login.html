@@ -1,0 +1,85 @@
+<!-- Extends the base html file that has all the repeated things that all files need -->
+{% extends 'base.html' %}
+
+<!-- Inserts header elements unique to this file into base template so can still use-->
+{% block head %}
+    <!--  Importing CSS style sheet -->
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='static/styles_login.css') }}"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_login.css') }}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Login</title>
+{% endblock %}
+
+
+{% block body %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class=flashes>
+    {% for category, message in messages %}
+    <div class="alert alert-{{category}} alert-dismissible fade show justify-content-center text-center" role="alert">
+        <strong>Messege</strong> {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<h4 style="background-color:#f1f1f1; text-align: center !important; padding: 5px;" class="float-centre">
+    Welcome</h4>
+
+<div class="wrapper fadeInDown" style="margin-top: -50px;">
+    <div id="formContent">
+
+        <form action="{{ url_for('login') }}" method="POST">
+            <input type="text" id="login" class="fadeIn second" name="uname" required placeholder="Username">
+            <input type="password" id="password" class="fadeIn third" name="psw" required placeholder="Password">
+            <input type="submit" class="fadeIn fourth" value="Log In">
+        </form>
+        <div id="formFooter">
+            <a class="underlineHover" href="{{ url_for('reset_password') }}"><span class="psw">Forgot password?</span></a>
+            <br>
+            <a class="underlineHover" href="{{ url_for('register') }}"><span class="psw">Dont have an account?</span></a>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- {# <form class="layui-form" method="post">
+    {{ form.csrf_token }}
+    <div class="layui-input-inline">
+        {{ form.username(class="layui-input",placeholder="username") }}
+    </div>
+    <div class="layui-input-inline">
+        {{ form.password(class="layui-input",placeholder="password") }}
+    </div>
+    <div class="layui-input-inline login-btn">
+        {{ form.submit(class="layui-btn") }}
+        <button lay-submit lay-filter="login" class="layui-btn">login</button>
+    </div>
+</form> #} -->
+
+{% endblock %}
+
+<!-- <div class="wrapper fadeInDown">
+    <div id="formContent">
+
+        <form action="{{ url_for('login') }}" method="POST">
+            <input type="text" id="login" class="fadeIn second" name="uname" required placeholder="Username">
+            <input type="text" id="password" class="fadeIn third" name="psw" required placeholder="password">
+            <input type="submit" class="fadeIn fourth" value="Log In">
+        </form>
+
+        <div id="formFooter">
+            <a class="underlineHover" href="{{ url_for('reset_password') }}"><span class="psw">Forgot password?</span>
+                <br>Dont Have an account?<a href="{{ url_for('register') }}"><button type="button"
+                        class="btn btn-primary">Sign Up</button></a>
+        </div>
+
+    </div>
+</div> -->
